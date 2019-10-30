@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
             Observer(
               builder: (_) => Text(
                 '${counter.value}',
+                key: Key('counter'),
                 style: Theme.of(context).textTheme.display1,
               ),
             ),
@@ -30,6 +31,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: Key('increment'),
         onPressed: () => counter.increment(),
         tooltip: 'Increment',
         child: Icon(Icons.add),

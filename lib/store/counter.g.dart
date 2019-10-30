@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'counter.dart';
+part of 'counter_test.dart';
 
 // **************************************************************************
 // StoreGenerator
