@@ -29,7 +29,7 @@ abstract class _WeatherBaseStore with Store {
   String error = '';
 
   @computed
-  bool get hasData => !isLoading && consolidatedWeathers.length > 0;
+  bool get hasData => consolidatedWeathers.length > 0;
 
   @computed
   ConsolidatedWeather get todayForecast => consolidatedWeathers.length > 0 ? consolidatedWeathers[0] : null;
@@ -50,10 +50,14 @@ abstract class _WeatherBaseStore with Store {
   Future<void> fetchWeatherForecast() {
     final Completer<void> completer = Completer<void>();
     isLoading = true;
+    isError = false;
     _weatherService.fetchWeatherForecast().then((WeatherResponse response) {
       sunSetRiseInfo = response.sunSetRiseInfo;
       consolidatedWeathers = response.consolidatedWeathers;
     }).catchError((_error) {
+      sunSetRiseInfo = null;
+      consolidatedWeathers = [];
+      isError = true;
       error = _error.toString();
     }).whenComplete(() {
       isLoading = false;

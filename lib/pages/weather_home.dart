@@ -72,56 +72,72 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
         ),
       ),
       body: Container(
-        child: Observer(
-            builder: (_) => _weatherStore.isLoading && !_weatherStore.hasData
-                ? Loader()
-                : _weatherStore.hasData
+        child: Stack(
+          children: <Widget>[
+            Observer(
+                builder: (_) => _weatherStore.isLoading && !_weatherStore.hasData
+                    ? Loader()
+                    : _weatherStore.hasData
                     ? SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Flex(
-                          direction: Axis.vertical,
-                          children: <Widget>[
-                            SizedBox(height: 20.0),
-                            Column(
-                              children: <Widget>[
-                                DelayedAnimation(
-                                  delay: delayedAmount,
-                                  child: WeatherInfoCard(
-                                      info: _weatherStore.todayForecast),
-                                ),
-                                SizedBox(height: 30.0),
-                                DelayedAnimation(
-                                  delay: delayedAmount + 100,
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.only(left: 20.0, right: 20.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text('Next 5 Days',
-                                          style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.primary)),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 15.0),
-                                NextFiveDaysForecast(
-                                    forecastList:
-                                    _weatherStore.nextFiveDaysForecast),
-                                SizedBox(height: 35.0),
-                              ],
-                            )
-                          ],
-                        ),
+                  physics: BouncingScrollPhysics(),
+                  child: Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      SizedBox(height: 20.0),
+                      Column(
+                        children: <Widget>[
+                          DelayedAnimation(
+                            delay: delayedAmount,
+                            child: WeatherInfoCard(
+                              info: _weatherStore.todayForecast,
+                              onRefresh: () {
+                                _loadWeatherForecast();
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 30.0),
+                          DelayedAnimation(
+                            delay: delayedAmount + 100,
+                            child: Padding(
+                              padding:
+                              EdgeInsets.only(left: 20.0, right: 20.0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('Next 5 Days',
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.primary)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 15.0),
+                          NextFiveDaysForecast(
+                              forecastList:
+                              _weatherStore.nextFiveDaysForecast),
+                          SizedBox(height: 35.0),
+                        ],
                       )
+                    ],
+                  ),
+                )
                     : ErrorCard(
-                        isError: _weatherStore.isError,
-                        error: _weatherStore.error,
-                        onRetry: () {
-                          _loadWeatherForecast();
-                        },
-                      )),
+                  isError: _weatherStore.isError,
+                  error: _weatherStore.error,
+                  onRetry: () {
+                    _loadWeatherForecast();
+                  },
+                )),
+            Positioned.fill(
+              child: Observer(
+                builder: (_) => _weatherStore.isLoading && _weatherStore.hasData ? Container(
+                  color: AppColors.white.withOpacity(0.4),
+                  child: Loader(),
+                ) : SizedBox(),
+              ),
+            )
+          ],
+        )
       ),
     );
   }

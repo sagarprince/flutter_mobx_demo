@@ -9,12 +9,14 @@ class WeatherInfoCard extends StatefulWidget {
   final ConsolidatedWeather info;
   final Color color;
   final CardType type;
+  final Function onRefresh;
 
   WeatherInfoCard({
     Key key,
     @required this.info,
     this.color = AppColors.green,
-    this.type = CardType.Today
+    this.type = CardType.Today,
+    this.onRefresh
   }) : assert(info != null),
         super(key: key);
 
@@ -46,6 +48,18 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
               width: 100.0,
               height: 100.0,
               child: Image.asset('assets/images/${widget.info.weatherStateAbbr}.png'),
+            ),
+          ),
+          Positioned(
+            top: 12,
+            right: 14,
+            child: IconButton(
+              icon: Icon(Icons.refresh, size: 32.0, color: AppColors.white),
+              onPressed: () {
+                if (widget.onRefresh != null) {
+                  widget.onRefresh();
+                }
+              },
             ),
           ),
           Column(
