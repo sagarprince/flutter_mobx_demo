@@ -12,21 +12,27 @@ class NextFiveDaysForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cards = <Widget>[];
+    for (int i = 0; i < forecastList.length; i++) {
+      cards.add(
+        DelayedAnimation(
+          delay: 200 * (i + 1) - 100,
+          child: WeatherInfoCard(
+              type: CardType.Other,
+              color: CardColors[i],
+              info: forecastList[i]
+          ),
+        )
+      );
+    }
     return Container(
-      height: 240.0,
-      child: ListView.builder(
+      height: 260.0,
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
-        itemCount: forecastList.length,
-        itemBuilder: (_, index) => DelayedAnimation(
-          delay: 200 * (index + 1) - 100,
-          child: WeatherInfoCard(
-            type: CardType.Other,
-            color: CardColors[index],
-            info: forecastList[index],
-          ),
+        child: Row(
+          children: cards,
         ),
-        addAutomaticKeepAlives: true
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx_demo/models/index.dart';
 import 'package:flutter_mobx_demo/services/weather_service.dart';
@@ -46,7 +47,8 @@ abstract class _WeatherBaseStore with Store {
   }
 
   @action
-  void fetchWeatherForecast() {
+  Future<void> fetchWeatherForecast() {
+    final Completer<void> completer = Completer<void>();
     isLoading = true;
     _weatherService.fetchWeatherForecast().then((WeatherResponse response) {
       sunSetRiseInfo = response.sunSetRiseInfo;
@@ -55,6 +57,8 @@ abstract class _WeatherBaseStore with Store {
       error = _error.toString();
     }).whenComplete(() {
       isLoading = false;
+      completer.complete(true);
     });
+    return completer.future;
   }
 }

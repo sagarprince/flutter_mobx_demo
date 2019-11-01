@@ -120,7 +120,7 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
       ActionController(name: '_WeatherBaseStore');
 
   @override
-  void fetchWeatherForecast() {
+  Future<void> fetchWeatherForecast() {
     final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
     try {
       return super.fetchWeatherForecast();

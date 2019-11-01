@@ -27,7 +27,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
   @override
   void initState() {
     _weatherStore = widget.weatherStore;
-    _weatherStore.fetchWeatherForecast();
+    _loadWeatherForecast();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -39,6 +39,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
       setState(() {});
     });
     super.initState();
+  }
+
+  void _loadWeatherForecast() async {
+    await _weatherStore.fetchWeatherForecast();
   }
 
   @override
@@ -85,7 +89,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                                   child: WeatherInfoCard(
                                       info: _weatherStore.todayForecast),
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 30.0),
                                 DelayedAnimation(
                                   delay: delayedAmount + 100,
                                   child: Padding(
@@ -101,11 +105,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 15.0),
                                 NextFiveDaysForecast(
                                     forecastList:
                                     _weatherStore.nextFiveDaysForecast),
-                                SizedBox(height: 40.0),
+                                SizedBox(height: 35.0),
                               ],
                             )
                           ],
@@ -115,7 +119,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                         isError: _weatherStore.isError,
                         error: _weatherStore.error,
                         onRetry: () {
-                          _weatherStore.fetchWeatherForecast();
+                          _loadWeatherForecast();
                         },
                       )),
       ),

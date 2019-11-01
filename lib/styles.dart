@@ -13,7 +13,7 @@ class AppColors {
   static const Color red = const Color(0xFFDC0000);
 }
 
-const List<Color> CardColors = [AppColors.green, AppColors.pink, AppColors.yellowShade, AppColors.blueShade, AppColors.red];
+const List<Color> CardColors = [AppColors.green, AppColors.pink, AppColors.blueLight, AppColors.blueShade, Colors.redAccent];
 
 class AppFonts {
   static const String primary = 'Noto Sans';

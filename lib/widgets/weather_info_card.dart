@@ -95,9 +95,18 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
       margin: EdgeInsets.only(left: 15.0, right: 15.0),
       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
       width: 170.0,
+      height: 240.0,
       decoration: BoxDecoration(
         color: widget.color,
         borderRadius: BorderRadius.circular(24.0),
+        boxShadow: [
+          BoxShadow(
+            color: widget.color.withOpacity(0.6),
+            blurRadius: 4.0,
+            spreadRadius: 0.0,
+            offset: Offset(0, 5.0)
+          )
+        ]
       ),
       child: Column(
         children: <Widget>[

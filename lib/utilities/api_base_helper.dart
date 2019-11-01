@@ -6,10 +6,10 @@ import 'package:flutter_mobx_demo/utilities/app_exception.dart';
 class ApiBaseHelper {
   final String _baseUrl = "https://www.metaweather.com/api/";
 
-  Future<dynamic> get(String url) async {
+  Future<dynamic> get(http.Client client, String url) async {
     var parseResponse;
     try {
-      final response = await http.get(_baseUrl + url);
+      final response = await client.get(_baseUrl + url);
       parseResponse = _parseResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
