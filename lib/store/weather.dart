@@ -28,6 +28,9 @@ abstract class _WeatherBaseStore with Store {
   @observable
   String error = '';
 
+  @observable
+  bool isDayInfoPanelOpened = false;
+
   @computed
   bool get hasData => consolidatedWeathers.length > 0;
 
@@ -64,5 +67,10 @@ abstract class _WeatherBaseStore with Store {
       completer.complete(true);
     });
     return completer.future;
+  }
+
+  @action
+  void toggleDayInfoPanel() {
+    isDayInfoPanelOpened = !isDayInfoPanelOpened;
   }
 }

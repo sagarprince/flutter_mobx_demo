@@ -116,6 +116,26 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
     }, _$errorAtom, name: '${_$errorAtom.name}_set');
   }
 
+  final _$isDayInfoPanelOpenedAtom =
+      Atom(name: '_WeatherBaseStore.isDayInfoPanelOpened');
+
+  @override
+  bool get isDayInfoPanelOpened {
+    _$isDayInfoPanelOpenedAtom.context
+        .enforceReadPolicy(_$isDayInfoPanelOpenedAtom);
+    _$isDayInfoPanelOpenedAtom.reportObserved();
+    return super.isDayInfoPanelOpened;
+  }
+
+  @override
+  set isDayInfoPanelOpened(bool value) {
+    _$isDayInfoPanelOpenedAtom.context.conditionallyRunInAction(() {
+      super.isDayInfoPanelOpened = value;
+      _$isDayInfoPanelOpenedAtom.reportChanged();
+    }, _$isDayInfoPanelOpenedAtom,
+        name: '${_$isDayInfoPanelOpenedAtom.name}_set');
+  }
+
   final _$_WeatherBaseStoreActionController =
       ActionController(name: '_WeatherBaseStore');
 
@@ -124,6 +144,16 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
     final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
     try {
       return super.fetchWeatherForecast();
+    } finally {
+      _$_WeatherBaseStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void toggleDayInfoPanel() {
+    final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
+    try {
+      return super.toggleDayInfoPanel();
     } finally {
       _$_WeatherBaseStoreActionController.endAction(_$actionInfo);
     }

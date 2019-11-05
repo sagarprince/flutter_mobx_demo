@@ -113,6 +113,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                           ),
                           SizedBox(height: 15.0),
                           NextFiveDaysForecast(
+                              weatherStore: _weatherStore,
                               forecastList:
                               _weatherStore.nextFiveDaysForecast),
                           SizedBox(height: 35.0),
@@ -139,6 +140,22 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
           ],
         )
       ),
+      floatingActionButton: Observer(
+        builder: (_) {
+          return _weatherStore.isDayInfoPanelOpened ? FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            backgroundColor: Colors.white,
+            child: const Icon(
+              Icons.close,
+              color: AppColors.red,
+              semanticLabel: 'close',
+            ),
+          ) : Container();
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
