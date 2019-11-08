@@ -11,9 +11,11 @@ class AppColors {
   static const Color yellowShade = const Color(0xFFFFAE00);
   static const Color blueShade = const Color(0xFF0090FF);
   static const Color red = const Color(0xFFDC0000);
+  static const Color darkCyanBlue = const Color(0xFF426070);
+  static const Color magentaShade = const Color(0xFF875F9A);
 }
 
-const List<Color> CardColors = [AppColors.green, AppColors.pink, AppColors.blueLight, AppColors.blueShade, Colors.redAccent];
+const List<Color> CardColors = [AppColors.green, AppColors.pink, AppColors.blueLight, AppColors.blueShade, Colors.redAccent, AppColors.darkCyanBlue, AppColors.magentaShade];
 
 class AppFonts {
   static const String primary = 'Noto Sans';

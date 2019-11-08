@@ -38,23 +38,22 @@ void main() {
     await tester.pumpWidget(
         MaterialApp(
           home: WeatherInfoCard(
-            info: ConsolidatedWeather(
-              id: 1,
-              weatherStateName: 'Heavy Rain',
-              weatherStateAbbr: 'hr',
+            info: Forecast(
+              summary: 'Partly Cloudy',
+              icon: 'partly-cloudy-night',
               humidity: 78,
-              theTemp: 30,
-              applicableDate: '2019-11-02',
-              minTemp: 28,
-              maxTemp: 32
+              temperature: 30,
+              time: 1573669800,
+              temperatureMin: 28,
+              temperatureMax: 32
             ),
           ),
         )
     );
 
-    expect(find.text('Heavy Rain'), findsOneWidget);
+    expect(find.text('Partly Cloudy'), findsOneWidget);
     expect(find.text('Heavy Clouds'), findsNothing);
-    expect(find.text('Saturday'), findsOneWidget);
+    expect(find.text('Wednesday'), findsOneWidget);
     expect(find.text('30°'), findsOneWidget);
     expect(find.text('32°'), findsNothing);
     expect(find.text('78°'), findsOneWidget);
@@ -66,22 +65,21 @@ void main() {
         MaterialApp(
           home: WeatherInfoCard(
             type: CardType.Other,
-            info: ConsolidatedWeather(
-                id: 1,
-                weatherStateName: 'Heavy Rain',
-                weatherStateAbbr: 'hr',
+            info: Forecast(
+                summary: 'Clear throughout the day.',
+                icon: 'clear-day',
                 humidity: 78,
-                theTemp: 26,
-                applicableDate: '2019-11-04',
-                minTemp: 28,
-                maxTemp: 30
+                temperature: 30,
+                time: 1573131249,
+                temperatureMin: 28,
+                temperatureMax: 32
             ),
           ),
         )
     );
 
-    expect(find.text('Heavy Clouds'), findsNothing);
-    expect(find.text('Monday'), findsOneWidget);
+    expect(find.text('Clear throughout the day'), findsNothing);
+    expect(find.text('Thursday'), findsOneWidget);
     expect(find.text('26°'), findsOneWidget);
     expect(find.text('28°'), findsOneWidget);
     expect(find.text('30°'), findsOneWidget);

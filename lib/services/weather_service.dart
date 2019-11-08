@@ -15,9 +15,8 @@ class WeatherService {
 
   WeatherService._internal();
 
-  Future<WeatherResponse> fetchWeatherForecast() async {
-    var parseResponse = await _apiBaseHelper.get(client, 'location/2295412/');
+  Future<WeatherResponse> fetchWeatherForecast([List<double> latLng = const [18.5204, 73.8567]]) async {
+    var parseResponse = await _apiBaseHelper.get(client, '/' + latLng.join(',') + '?units=si&exclude=hourly');
     return WeatherResponse.fromJson(parseResponse);
   }
-
 }

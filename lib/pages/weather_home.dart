@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_mobx_demo/styles.dart';
+import 'package:flutter_mobx_demo/utilities/keys.dart';
+import 'package:flutter_mobx_demo/services/shared_service.dart';
 import 'package:flutter_mobx_demo/widgets/loader.dart';
 import 'package:flutter_mobx_demo/widgets/weather_info_card.dart';
-import 'package:flutter_mobx_demo/widgets/next_five_days_forecast.dart';
+import 'package:flutter_mobx_demo/widgets/next_seven_days_forecast.dart';
 import 'package:flutter_mobx_demo/widgets/error_card.dart';
 import 'package:flutter_mobx_demo/widgets/delayed_animation.dart';
 import 'package:flutter_mobx_demo/store/weather.dart';
+
+SharedService _sharedService = SharedService();
 
 class WeatherHomePage extends StatefulWidget {
   final WeatherStore weatherStore;
@@ -75,7 +79,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
         child: Stack(
           children: <Widget>[
             Observer(
-                builder: (_) => _weatherStore.isLoading && !_weatherStore.hasData
+                builder: (_context) => _weatherStore.isLoading && !_weatherStore.hasData
                     ? Loader()
                     : _weatherStore.hasData
                     ? SingleChildScrollView(
@@ -88,10 +92,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                         children: <Widget>[
                           DelayedAnimation(
                             delay: delayedAmount,
-                            child: WeatherInfoCard(
-                              info: _weatherStore.todayForecast,
-                              onRefresh: () {
-                                _loadWeatherForecast();
+                            child: GestureDetector(
+                              child: WeatherInfoCard(
+                                info: _weatherStore.currentForecast,
+                                onRefresh: () {
+                                  _loadWeatherForecast();
+                                },
+                              ),
+                              onTap: () {
+                                _sharedService.showDayWeatherInfo(_weatherStore, _context, _weatherStore.currentForecast);
                               },
                             ),
                           ),
@@ -103,7 +112,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                               EdgeInsets.only(left: 20.0, right: 20.0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text('Next 5 Days',
+                                child: Text('Next 7 Days',
                                     style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w700,
@@ -112,10 +121,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                             ),
                           ),
                           SizedBox(height: 15.0),
-                          NextFiveDaysForecast(
+                          NextSevenDaysForecast(
                               weatherStore: _weatherStore,
                               forecastList:
-                              _weatherStore.nextFiveDaysForecast),
+                              _weatherStore.nextSevenDaysForecast),
                           SizedBox(height: 35.0),
                         ],
                       )

@@ -1,35 +1,30 @@
-import 'package:flutter_mobx_demo/models/consolidated_weather.dart';
-import 'package:flutter_mobx_demo/models/sunsetrise_info.dart';
+import 'package:flutter_mobx_demo/models/forecast.dart';
 
 class WeatherResponse {
-  List<ConsolidatedWeather> consolidatedWeathers;
-  SunSetRiseInfo sunSetRiseInfo;
+  double latitude;
+  double longitude;
+  Forecast currentForecast;
+  List<Forecast> hourlyForecast;
+  List<Forecast> dailyForecast;
 
-  WeatherResponse(
-      {this.consolidatedWeathers,
-        this.sunSetRiseInfo});
+  WeatherResponse({this.latitude, this.longitude, this.currentForecast, this.hourlyForecast, this.dailyForecast});
 
-  WeatherResponse.fromJson(Map<String, dynamic> json) {
-    if (json['consolidated_weather'] != null) {
-      consolidatedWeathers = new List<ConsolidatedWeather>();
-      json['consolidated_weather'].forEach((v) {
-        consolidatedWeathers.add(new ConsolidatedWeather.fromJson(v));
-      });
-    }
-    this.sunSetRiseInfo = SunSetRiseInfo.fromJson(json);
+  factory WeatherResponse.fromJson(Map<String, dynamic> data) {
+    dynamic hourly = data["hourly"] != null ? data["hourly"]["data"] : null;
+    dynamic daily = data["daily"] != null ? data["daily"]["data"] : null;
+    return WeatherResponse(
+      latitude: data["latitude"] != null ? data["latitude"] : null,
+      longitude: data["longitude"] != null ? data["longitude"] : null,
+      currentForecast: data["currently"] != null ? Forecast.fromMap(data["currently"]) : null,
+      hourlyForecast: hourly == null ? [] : List<Forecast>.from(hourly.map((x) => Forecast.fromMap(x))),
+      dailyForecast: daily == null ? [] : List<Forecast>.from(daily.map((x) => Forecast.fromMap(x)))
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.consolidatedWeathers != null) {
-      data['consolidated_weather'] =
-          this.consolidatedWeathers.map((v) => v.toJson()).toList();
-    }
-    data['time'] = this.sunSetRiseInfo.time;
-    data['sun_rise'] = this.sunSetRiseInfo.sunRise;
-    data['sun_set'] = this.sunSetRiseInfo.sunSet;
-    data['title'] = this.sunSetRiseInfo.title;
-    data['latt_long'] = this.sunSetRiseInfo.latLong;
-    return data;
-  }
+  @override
+  String toString() => 'WeatherResponse{'
+      'currentForecast: $currentForecast, '
+      'hourlyForecast: $hourlyForecast, '
+      'dailyForecast: $dailyForecast, '
+  '}';
 }

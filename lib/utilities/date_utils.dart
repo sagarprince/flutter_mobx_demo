@@ -13,6 +13,8 @@ class DateUtils {
 
   static DateTime parseDate(String d) => DateTime.parse(d);
 
+  static DateTime parseTimestamp(int timestamp) => DateTime.fromMillisecondsSinceEpoch(timestamp);
+
   static String weekDay(DateTime date) => DateUtils.days[date.weekday - 1];
 
   static final DateFormat _dateFormat = new DateFormat("d MMMM, yyyy");

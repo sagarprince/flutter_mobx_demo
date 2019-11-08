@@ -38,12 +38,6 @@ class _DelayedAnimationState extends State<DelayedAnimation>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FadeTransition(
       child: SlideTransition(
@@ -52,5 +46,11 @@ class _DelayedAnimationState extends State<DelayedAnimation>
       ),
       opacity: _controller,
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

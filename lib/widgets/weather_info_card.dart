@@ -6,7 +6,7 @@ import 'package:flutter_mobx_demo/utilities/date_utils.dart';
 enum CardType { Today, Other }
 
 class WeatherInfoCard extends StatefulWidget {
-  final ConsolidatedWeather info;
+  final Forecast info;
   final Color color;
   final CardType type;
   final Function onRefresh;
@@ -27,7 +27,7 @@ class WeatherInfoCard extends StatefulWidget {
 class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAliveClientMixin {
 
   Widget _todayCardWidget() {
-    String weekDay = DateUtils.weekDay(DateUtils.parseDate(widget.info.applicableDate));
+    String weekDay = DateUtils.weekDay(DateUtils.parseTimestamp(widget.info.time));
     return Container(
       margin: EdgeInsets.only(left: 20.0, right: 20.0),
       width: double.infinity,
@@ -38,78 +38,81 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
         image: DecorationImage(
             image: AssetImage('assets/images/layer.png'), fit: BoxFit.cover),
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            right: -10,
-            child: SizedBox(
-              width: 100.0,
-              height: 100.0,
-              child: Image.asset('assets/images/${widget.info.weatherStateAbbr}.png'),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(40.0),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              bottom: 0,
+              right: -10,
+              child: SizedBox(
+                width: 120.0,
+                height: 120.0,
+                child: Image.network(widget.info.icon),
+              ),
             ),
-          ),
-          Positioned(
-            top: 12,
-            right: 14,
-            child: IconButton(
-              icon: Icon(Icons.refresh, size: 32.0, color: AppColors.white),
-              onPressed: () {
-                if (widget.onRefresh != null) {
-                  widget.onRefresh();
-                }
-              },
+            Positioned(
+              top: 12,
+              right: 14,
+              child: IconButton(
+                icon: Icon(Icons.refresh, size: 32.0, color: AppColors.white),
+                onPressed: () {
+                  if (widget.onRefresh != null) {
+                    widget.onRefresh();
+                  }
+                },
+              ),
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 5.0),
-              Text(weekDay,
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.white)),
-              SizedBox(
-                  height: 140.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('${widget.info.theTemp.ceil()}°',
-                          style: TextStyle(
-                              fontSize: 110.0, color: AppColors.white)),
-                    ],
-                  )),
-              Text(widget.info.weatherStateName,
-                  style: TextStyle(fontSize: 24.0, color: AppColors.white)),
-              SizedBox(height: 15.0),
-              Text('Humidity',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w700)),
-              SizedBox(height: 2.0),
-              Text('${widget.info.humidity}°',
-                  style: TextStyle(
-                      fontSize: 28.0,
-                      color: AppColors.white.withOpacity(0.4),
-                      fontWeight: FontWeight.w700)),
-            ],
-          )
-        ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 5.0),
+                Text(weekDay,
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white)),
+                SizedBox(
+                    height: 140.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('${widget.info.temperature.ceil()}°',
+                            style: TextStyle(
+                                fontSize: 110.0, color: AppColors.white)),
+                      ],
+                    )),
+                Text(widget.info.summary,
+                    style: TextStyle(fontSize: 24.0, color: AppColors.white)),
+                SizedBox(height: 15.0),
+                Text('Humidity',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w700)),
+                SizedBox(height: 2.0),
+                Text('${widget.info.humidity}°',
+                    style: TextStyle(
+                        fontSize: 28.0,
+                        color: AppColors.white.withOpacity(0.4),
+                        fontWeight: FontWeight.w700)),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget _otherCardWidget() {
-    String weekDay = DateUtils.weekDay(DateUtils.parseDate(widget.info.applicableDate));
+    String weekDay = DateUtils.weekDay(DateUtils.parseTimestamp(widget.info.time));
     return Container(
       margin: EdgeInsets.only(left: 15.0, right: 15.0),
       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
       width: 170.0,
-      height: 240.0,
+      height: 280.0,
       decoration: BoxDecoration(
         color: widget.color,
         borderRadius: BorderRadius.circular(24.0),
@@ -131,12 +134,12 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
                   color: AppColors.white)),
           SizedBox(height: 20.0),
           Container(
-            width: 60.0,
-            height: 60.0,
-            child: Image.asset('assets/images/${widget.info.weatherStateAbbr}.png'),
+            width: 100.0,
+            height: 100.0,
+            child: Image.network(widget.info.icon),
           ),
-          SizedBox(height: 20.0),
-          Text('${widget.info.theTemp.ceil()}°',
+          SizedBox(height: 10.0),
+          Text('${widget.info.apparentTemperatureMin.ceil()}°',
               style: TextStyle(
                   fontSize: 35.0,
                   color: AppColors.white)),
@@ -144,13 +147,13 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('${widget.info.minTemp.ceil()}°',
+              Text('${widget.info.temperatureMin.ceil()}°',
                   style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
                       color: AppColors.white.withOpacity(0.7))),
               SizedBox(width: 20.0),
-              Text('${widget.info.maxTemp.ceil()}°',
+              Text('${widget.info.temperatureMax.ceil()}°',
                   style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,

@@ -17,9 +17,7 @@ void main() {
     });
     test('fetchWeatherForecast', () async {
       await _weatherStore.fetchWeatherForecast();
-      print(_weatherStore.consolidatedWeathers.length);
-      expect(_weatherStore.consolidatedWeathers.length, greaterThan(0));
-      expect(_weatherStore.sunSetRiseInfo, isNotNull);
+      expect(_weatherStore.dailyForecast.length, greaterThan(0));
       expect(_weatherStore.isLoading, false);
     });
   });

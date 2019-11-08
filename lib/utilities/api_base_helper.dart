@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_mobx_demo/utilities/app_exception.dart';
 
 class ApiBaseHelper {
-  final String _baseUrl = "https://www.metaweather.com/api/";
+  final String _baseUrl = "https://api.darksky.net/forecast/cfe0941867534a7e09555eebb5dd946c";
 
   Future<dynamic> get(http.Client client, String url) async {
     var parseResponse;

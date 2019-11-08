@@ -14,55 +14,46 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
   @override
   bool get hasData =>
       (_$hasDataComputed ??= Computed<bool>(() => super.hasData)).value;
-  Computed<ConsolidatedWeather> _$todayForecastComputed;
+  Computed<List<Forecast>> _$nextSevenDaysForecastComputed;
 
   @override
-  ConsolidatedWeather get todayForecast => (_$todayForecastComputed ??=
-          Computed<ConsolidatedWeather>(() => super.todayForecast))
-      .value;
-  Computed<List<ConsolidatedWeather>> _$nextFiveDaysForecastComputed;
-
-  @override
-  List<ConsolidatedWeather> get nextFiveDaysForecast =>
-      (_$nextFiveDaysForecastComputed ??= Computed<List<ConsolidatedWeather>>(
-              () => super.nextFiveDaysForecast))
+  List<Forecast> get nextSevenDaysForecast =>
+      (_$nextSevenDaysForecastComputed ??=
+              Computed<List<Forecast>>(() => super.nextSevenDaysForecast))
           .value;
 
-  final _$sunSetRiseInfoAtom = Atom(name: '_WeatherBaseStore.sunSetRiseInfo');
+  final _$currentForecastAtom = Atom(name: '_WeatherBaseStore.currentForecast');
 
   @override
-  SunSetRiseInfo get sunSetRiseInfo {
-    _$sunSetRiseInfoAtom.context.enforceReadPolicy(_$sunSetRiseInfoAtom);
-    _$sunSetRiseInfoAtom.reportObserved();
-    return super.sunSetRiseInfo;
+  Forecast get currentForecast {
+    _$currentForecastAtom.context.enforceReadPolicy(_$currentForecastAtom);
+    _$currentForecastAtom.reportObserved();
+    return super.currentForecast;
   }
 
   @override
-  set sunSetRiseInfo(SunSetRiseInfo value) {
-    _$sunSetRiseInfoAtom.context.conditionallyRunInAction(() {
-      super.sunSetRiseInfo = value;
-      _$sunSetRiseInfoAtom.reportChanged();
-    }, _$sunSetRiseInfoAtom, name: '${_$sunSetRiseInfoAtom.name}_set');
+  set currentForecast(Forecast value) {
+    _$currentForecastAtom.context.conditionallyRunInAction(() {
+      super.currentForecast = value;
+      _$currentForecastAtom.reportChanged();
+    }, _$currentForecastAtom, name: '${_$currentForecastAtom.name}_set');
   }
 
-  final _$consolidatedWeathersAtom =
-      Atom(name: '_WeatherBaseStore.consolidatedWeathers');
+  final _$dailyForecastAtom = Atom(name: '_WeatherBaseStore.dailyForecast');
 
   @override
-  List<ConsolidatedWeather> get consolidatedWeathers {
-    _$consolidatedWeathersAtom.context
-        .enforceReadPolicy(_$consolidatedWeathersAtom);
-    _$consolidatedWeathersAtom.reportObserved();
-    return super.consolidatedWeathers;
+  List<Forecast> get dailyForecast {
+    _$dailyForecastAtom.context.enforceReadPolicy(_$dailyForecastAtom);
+    _$dailyForecastAtom.reportObserved();
+    return super.dailyForecast;
   }
 
   @override
-  set consolidatedWeathers(List<ConsolidatedWeather> value) {
-    _$consolidatedWeathersAtom.context.conditionallyRunInAction(() {
-      super.consolidatedWeathers = value;
-      _$consolidatedWeathersAtom.reportChanged();
-    }, _$consolidatedWeathersAtom,
-        name: '${_$consolidatedWeathersAtom.name}_set');
+  set dailyForecast(List<Forecast> value) {
+    _$dailyForecastAtom.context.conditionallyRunInAction(() {
+      super.dailyForecast = value;
+      _$dailyForecastAtom.reportChanged();
+    }, _$dailyForecastAtom, name: '${_$dailyForecastAtom.name}_set');
   }
 
   final _$isLoadingAtom = Atom(name: '_WeatherBaseStore.isLoading');
@@ -150,10 +141,10 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
   }
 
   @override
-  void toggleDayInfoPanel() {
+  void toggleDayInfoPanel(bool isOpened) {
     final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
     try {
-      return super.toggleDayInfoPanel();
+      return super.toggleDayInfoPanel(isOpened);
     } finally {
       _$_WeatherBaseStoreActionController.endAction(_$actionInfo);
     }

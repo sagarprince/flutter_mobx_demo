@@ -14,10 +14,10 @@ abstract class _WeatherBaseStore with Store {
   final WeatherService _weatherService;
 
   @observable
-  SunSetRiseInfo sunSetRiseInfo;
+  Forecast currentForecast;
 
   @observable
-  List<ConsolidatedWeather> consolidatedWeathers = [];
+  List<Forecast> dailyForecast = [];
 
   @observable
   bool isLoading = false;
@@ -32,18 +32,14 @@ abstract class _WeatherBaseStore with Store {
   bool isDayInfoPanelOpened = false;
 
   @computed
-  bool get hasData => consolidatedWeathers.length > 0;
+  bool get hasData => dailyForecast.length > 0;
 
   @computed
-  ConsolidatedWeather get todayForecast => consolidatedWeathers.length > 0 ? consolidatedWeathers[0] : null;
-
-  @computed
-  List<ConsolidatedWeather> get nextFiveDaysForecast {
-    List<ConsolidatedWeather> list = [];
-    if (consolidatedWeathers.length > 0) {
-      int i = 1;
-      for(i = 1; i <= 5; i++) {
-        list.add(consolidatedWeathers[i]);
+  List<Forecast> get nextSevenDaysForecast {
+    List<Forecast> list = [];
+    if (dailyForecast.length > 0) {
+      for(int i = 1; i <= 7; i++) {
+        list.add(dailyForecast[i]);
       }
     }
     return list;
@@ -55,11 +51,12 @@ abstract class _WeatherBaseStore with Store {
     isLoading = true;
     isError = false;
     _weatherService.fetchWeatherForecast().then((WeatherResponse response) {
-      sunSetRiseInfo = response.sunSetRiseInfo;
-      consolidatedWeathers = response.consolidatedWeathers;
+      currentForecast = response.currentForecast;
+      dailyForecast = response.dailyForecast;
     }).catchError((_error) {
-      sunSetRiseInfo = null;
-      consolidatedWeathers = [];
+      print(_error);
+      currentForecast = null;
+      dailyForecast = [];
       isError = true;
       error = _error.toString();
     }).whenComplete(() {
@@ -70,7 +67,7 @@ abstract class _WeatherBaseStore with Store {
   }
 
   @action
-  void toggleDayInfoPanel() {
-    isDayInfoPanelOpened = !isDayInfoPanelOpened;
+  void toggleDayInfoPanel(bool isOpened) {
+    isDayInfoPanelOpened = isOpened;
   }
 }

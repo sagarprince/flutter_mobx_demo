@@ -10,12 +10,16 @@ main() {
     test('Weather Forecast Response on Success', () async {
       final _weatherService = WeatherService();
       _weatherService.client = MockClient((request) async {
-        final jsonData = {'title' : 'pune'};
+        final jsonData = {
+          "latitude": 18.5204,
+          "longitude": 73.8567
+        };
         return http.Response(json.encode(jsonData), 200);
       });
       final _data = await _weatherService.fetchWeatherForecast();
       WeatherResponse response = _data;
-      expect(response.sunSetRiseInfo.title, 'pune');
+      expect(response.latitude, 18.5204);
+      expect(response.longitude, 73.8567);
     });
 
     test('Weather Forecast Response on Error', () async {
