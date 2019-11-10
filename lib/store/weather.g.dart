@@ -22,6 +22,40 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
               Computed<List<Forecast>>(() => super.nextSevenDaysForecast))
           .value;
 
+  final _$latAtom = Atom(name: '_WeatherBaseStore.lat');
+
+  @override
+  double get lat {
+    _$latAtom.context.enforceReadPolicy(_$latAtom);
+    _$latAtom.reportObserved();
+    return super.lat;
+  }
+
+  @override
+  set lat(double value) {
+    _$latAtom.context.conditionallyRunInAction(() {
+      super.lat = value;
+      _$latAtom.reportChanged();
+    }, _$latAtom, name: '${_$latAtom.name}_set');
+  }
+
+  final _$lngAtom = Atom(name: '_WeatherBaseStore.lng');
+
+  @override
+  double get lng {
+    _$lngAtom.context.enforceReadPolicy(_$lngAtom);
+    _$lngAtom.reportObserved();
+    return super.lng;
+  }
+
+  @override
+  set lng(double value) {
+    _$lngAtom.context.conditionallyRunInAction(() {
+      super.lng = value;
+      _$lngAtom.reportChanged();
+    }, _$lngAtom, name: '${_$lngAtom.name}_set');
+  }
+
   final _$currentForecastAtom = Atom(name: '_WeatherBaseStore.currentForecast');
 
   @override

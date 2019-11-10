@@ -29,6 +29,7 @@ dependencies:
   flutter_mobx: ^0.3.3
   font_awesome_flutter:
   cached_network_image: ^1.1.3
+  geolocator: ^5.1.3
 
 dev_dependencies:
   flutter_driver:

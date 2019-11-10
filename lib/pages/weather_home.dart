@@ -30,6 +30,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
   @override
   void initState() {
     _weatherStore = widget.weatherStore;
+//    _loadCurrentLocation();
     _loadWeatherForecast();
     _controller = AnimationController(
       vsync: this,
@@ -42,6 +43,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
       setState(() {});
     });
     super.initState();
+  }
+
+  void _loadCurrentLocation() async {
+    await _weatherStore.getCurrentLocation();
   }
 
   void _loadWeatherForecast() async {

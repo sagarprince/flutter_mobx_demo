@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx_demo/theme.dart';
 import 'package:flutter_mobx_demo/store/weather.dart';
+import 'package:flutter_mobx_demo/services/shared_service.dart';
 import 'package:flutter_mobx_demo/services/weather_service.dart';
 import 'package:flutter_mobx_demo/pages/weather_home.dart';
 
@@ -16,8 +17,11 @@ class MyApp extends StatelessWidget {
         Provider<WeatherService>(
           builder: (_) => WeatherService()
         ),
-        ProxyProvider<WeatherService, WeatherStore>(
-          builder: (_, weatherService, __) => WeatherStore(weatherService)
+        Provider<SharedService>(
+            builder: (_) => SharedService()
+        ),
+        ProxyProvider2<WeatherService, SharedService, WeatherStore>(
+          builder: (_, weatherService, sharedService,  __) => WeatherStore(weatherService, sharedService)
         ),
       ],
       child: MaterialApp(

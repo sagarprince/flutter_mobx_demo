@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:mobx/mobx.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter_mobx_demo/models/index.dart';
+import 'package:flutter_mobx_demo/services/shared_service.dart';
 import 'package:flutter_mobx_demo/services/weather_service.dart';
 
 part 'weather.g.dart';
@@ -8,10 +10,19 @@ part 'weather.g.dart';
 class WeatherStore = _WeatherBaseStore with _$WeatherStore;
 
 abstract class _WeatherBaseStore with Store {
-
-  _WeatherBaseStore(this._weatherService);
-
   final WeatherService _weatherService;
+  final SharedService _sharedService;
+
+  _WeatherBaseStore(this._weatherService, this._sharedService);
+
+  @observable
+  double lat = 0;
+
+  @observable
+  double lng = 0;
+
+  @observable
+  String place = '';
 
   @observable
   Forecast currentForecast;
@@ -50,6 +61,24 @@ abstract class _WeatherBaseStore with Store {
     }
     return list;
   }
+
+  @action
+  Future<void> getCurrentLocation() {
+    final Completer<void> completer = Completer<void>();
+    isLoading = true;
+    isError = false;
+    _sharedService.getCurrentLocation().then((Position pos) {
+      lat = pos.latitude;
+      lng = pos.longitude;
+    }).catchError((e) {
+      isError = true;
+      print(e);
+    }).whenComplete(() {
+      completer.complete(true);
+    });
+    return completer.future;
+  }
+
 
   @action
   Future<void> fetchWeatherForecast() {

@@ -1,14 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_mobx_demo/services/weather_service.dart';
+import 'package:flutter_mobx_demo/services/shared_service.dart';
 import 'package:flutter_mobx_demo/store/weather.dart';
 
 void main() {
   WeatherStore _weatherStore;
   WeatherService _weatherService;
+  SharedService _sharedService;
 
   setUp(() {
     _weatherService = WeatherService();
-    _weatherStore = WeatherStore(_weatherService);
+    _weatherStore = WeatherStore(_weatherService, _sharedService);
   });
 
   group('Weather Store', () {
