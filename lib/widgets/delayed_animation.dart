@@ -32,7 +32,9 @@ class _DelayedAnimationState extends State<DelayedAnimation>
       _controller.forward();
     } else {
       Timer(Duration(milliseconds: widget.delay), () {
-        _controller.forward();
+        if (_controller != null) {
+          _controller.forward();
+        }
       });
     }
   }
@@ -51,6 +53,7 @@ class _DelayedAnimationState extends State<DelayedAnimation>
   @override
   void dispose() {
     _controller.dispose();
+    _controller = null;
     super.dispose();
   }
 }

@@ -19,4 +19,7 @@ class DateUtils {
 
   static final DateFormat _dateFormat = new DateFormat("d MMMM, yyyy");
   static String formatDate(DateTime d) => _dateFormat.format(d);
+
+  static final DateFormat _timeFormat = new DateFormat("HH:mm");
+  static String formatTime(int time) => _timeFormat.format(parseTimestamp(time));
 }

@@ -16,7 +16,13 @@ class WeatherService {
   WeatherService._internal();
 
   Future<WeatherResponse> fetchWeatherForecast([List<double> latLng = const [18.5204, 73.8567]]) async {
-    var parseResponse = await _apiBaseHelper.get(client, '/' + latLng.join(',') + '?units=si&exclude=hourly');
+    var parseResponse = await _apiBaseHelper.get(client, '/' + latLng.join(',') + '?units=si&exclude=hourly,flags');
+    return WeatherResponse.fromJson(parseResponse);
+  }
+
+  Future<WeatherResponse> fetchDayHourlyForecast(int timestamp, [List<double> latLng = const [18.5204, 73.8567]]) async {
+    String time = ((timestamp / 1000).round()).toString();
+    var parseResponse = await _apiBaseHelper.get(client, '/' + latLng.join(',') + ',' + time + '?units=si&exclude=currently,daily,flags');
     return WeatherResponse.fromJson(parseResponse);
   }
 }

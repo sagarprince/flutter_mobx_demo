@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_mobx_demo/styles.dart';
-import 'package:flutter_mobx_demo/utilities/keys.dart';
 import 'package:flutter_mobx_demo/services/shared_service.dart';
 import 'package:flutter_mobx_demo/widgets/loader.dart';
 import 'package:flutter_mobx_demo/widgets/weather_info_card.dart';
@@ -100,7 +99,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
                                 },
                               ),
                               onTap: () {
-                                _sharedService.showDayWeatherInfo(_weatherStore, _context, _weatherStore.currentForecast);
+                                _sharedService.showDayWeatherInfo(_context, _weatherStore.currentForecast);
                               },
                             ),
                           ),
@@ -151,15 +150,19 @@ class _WeatherHomePageState extends State<WeatherHomePage> with SingleTickerProv
       ),
       floatingActionButton: Observer(
         builder: (_) {
-          return _weatherStore.isDayInfoPanelOpened ? FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            backgroundColor: Colors.white,
-            child: const Icon(
-              Icons.close,
-              color: AppColors.red,
-              semanticLabel: 'close',
+          return _weatherStore.isDayInfoPanelOpened ? SizedBox(
+            width: 45.0,
+            height: 45.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.close,
+                color: AppColors.red,
+                semanticLabel: 'close',
+              ),
             ),
           ) : Container();
         },

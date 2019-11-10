@@ -20,7 +20,13 @@ abstract class _WeatherBaseStore with Store {
   List<Forecast> dailyForecast = [];
 
   @observable
+  List<Forecast> hourlyForecast = [];
+
+  @observable
   bool isLoading = false;
+
+  @observable
+  bool isHourlyForecastLoading = false;
 
   @observable
   bool isError = false;
@@ -61,6 +67,25 @@ abstract class _WeatherBaseStore with Store {
       error = _error.toString();
     }).whenComplete(() {
       isLoading = false;
+      completer.complete(true);
+    });
+    return completer.future;
+  }
+
+  @action
+  Future<void> fetchDayHourlyForecast(int timestamp) {
+    final Completer<void> completer = Completer<void>();
+    isHourlyForecastLoading = true;
+    isError = false;
+    _weatherService.fetchDayHourlyForecast(timestamp).then((WeatherResponse response) {
+      hourlyForecast = response.hourlyForecast;
+    }).catchError((_error) {
+      print(_error);
+      hourlyForecast = [];
+      isError = true;
+      error = _error.toString();
+    }).whenComplete(() {
+      isHourlyForecastLoading = false;
       completer.complete(true);
     });
     return completer.future;

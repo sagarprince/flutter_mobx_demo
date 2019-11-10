@@ -56,6 +56,23 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
     }, _$dailyForecastAtom, name: '${_$dailyForecastAtom.name}_set');
   }
 
+  final _$hourlyForecastAtom = Atom(name: '_WeatherBaseStore.hourlyForecast');
+
+  @override
+  List<Forecast> get hourlyForecast {
+    _$hourlyForecastAtom.context.enforceReadPolicy(_$hourlyForecastAtom);
+    _$hourlyForecastAtom.reportObserved();
+    return super.hourlyForecast;
+  }
+
+  @override
+  set hourlyForecast(List<Forecast> value) {
+    _$hourlyForecastAtom.context.conditionallyRunInAction(() {
+      super.hourlyForecast = value;
+      _$hourlyForecastAtom.reportChanged();
+    }, _$hourlyForecastAtom, name: '${_$hourlyForecastAtom.name}_set');
+  }
+
   final _$isLoadingAtom = Atom(name: '_WeatherBaseStore.isLoading');
 
   @override
@@ -71,6 +88,26 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
       super.isLoading = value;
       _$isLoadingAtom.reportChanged();
     }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+  }
+
+  final _$isHourlyForecastLoadingAtom =
+      Atom(name: '_WeatherBaseStore.isHourlyForecastLoading');
+
+  @override
+  bool get isHourlyForecastLoading {
+    _$isHourlyForecastLoadingAtom.context
+        .enforceReadPolicy(_$isHourlyForecastLoadingAtom);
+    _$isHourlyForecastLoadingAtom.reportObserved();
+    return super.isHourlyForecastLoading;
+  }
+
+  @override
+  set isHourlyForecastLoading(bool value) {
+    _$isHourlyForecastLoadingAtom.context.conditionallyRunInAction(() {
+      super.isHourlyForecastLoading = value;
+      _$isHourlyForecastLoadingAtom.reportChanged();
+    }, _$isHourlyForecastLoadingAtom,
+        name: '${_$isHourlyForecastLoadingAtom.name}_set');
   }
 
   final _$isErrorAtom = Atom(name: '_WeatherBaseStore.isError');
@@ -135,6 +172,16 @@ mixin _$WeatherStore on _WeatherBaseStore, Store {
     final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
     try {
       return super.fetchWeatherForecast();
+    } finally {
+      _$_WeatherBaseStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<void> fetchDayHourlyForecast(int timestamp) {
+    final _$actionInfo = _$_WeatherBaseStoreActionController.startAction();
+    try {
+      return super.fetchDayHourlyForecast(timestamp);
     } finally {
       _$_WeatherBaseStoreActionController.endAction(_$actionInfo);
     }

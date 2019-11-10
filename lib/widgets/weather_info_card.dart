@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_mobx_demo/styles.dart';
 import 'package:flutter_mobx_demo/models/index.dart';
 import 'package:flutter_mobx_demo/utilities/date_utils.dart';
@@ -49,7 +50,11 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
               child: SizedBox(
                 width: 120.0,
                 height: 120.0,
-                child: Image.network(widget.info.icon),
+                child: CachedNetworkImage(
+                  imageUrl: widget.info.icon,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error, size: 50.0, color: AppColors.red),
+                ),
               ),
             ),
             Positioned(
@@ -133,10 +138,14 @@ class _WeatherInfoCardState extends State<WeatherInfoCard> with AutomaticKeepAli
                   fontWeight: FontWeight.w700,
                   color: AppColors.white)),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 100.0,
             height: 100.0,
-            child: Image.network(widget.info.icon),
+            child: CachedNetworkImage(
+              imageUrl: widget.info.icon,
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error, size: 50.0, color: AppColors.red),
+            ),
           ),
           SizedBox(height: 10.0),
           Text('${widget.info.apparentTemperatureMin.ceil()}°',

@@ -32,7 +32,7 @@ class NextSevenDaysForecast extends StatelessWidget {
               info: info
           ),
           onTap: () {
-            _sharedService.showDayWeatherInfo(weatherStore, context, info, color);
+            _sharedService.showDayWeatherInfo(context, info, color);
           },
         ),
       ));
